@@ -1,4 +1,4 @@
-![Gary](https://github.com/surudhb/first-twitter-bot/blob/master/assets/gary.jpeg) Say hello to Gary at [@GarySquarepan13](https://twitter.com/GarySquarepan13)
+<img src="./assets/gary.jpeg" alt="gary" width="100"/> Follow me at [@GarySquarepan13](https://twitter.com/GarySquarepan13)
 
 Shoutout to [The Coding Train](https://thecodingtrain.com/) for the constant inspiration and tutorials! :)
 
@@ -22,5 +22,3 @@ Shoutout to [The Coding Train](https://thecodingtrain.com/) for the constant ins
 * Using an actual API
 * Introduction to promises and chaining multiple API calls
 * Fight boredom during lockdown #COVID19
-
-
