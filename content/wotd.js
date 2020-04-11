@@ -1,6 +1,5 @@
 // using npm unirest package https://github.com/Kong/unirest-nodejs
-
-var unirest = require("unirest");
+const unirest = require("unirest");
 
 
 /**

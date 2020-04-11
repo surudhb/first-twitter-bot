@@ -1,12 +1,11 @@
 // using npm unirest package https://github.com/Kong/unirest-nodejs
 
-var unirest = require("unirest");
+const unirest = require("unirest");
 
 
 /**
  * Using JokeAPI V2 https://sv443.net/jokeapi/v2 
  */
-// getRandomJoke();
 
 module.exports = {
 	getRandomJoke: () => {

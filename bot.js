@@ -1,12 +1,12 @@
-var Twit = require('twit');
-var config = require('./config');
+const Twit = require('twit');
+const config = require('./config');
 
-var cataas = require('./content/cats');
-var hazdadjokes = require('./content/dadjokes');
-var jokes = require('./content/jokes.js');
-var wotd = require('./content/wotd');
+const cataas = require('./content/cats');
+const hazdadjokes = require('./content/dadjokes');
+const jokes = require('./content/jokes.js');
+const wotd = require('./content/wotd');
 
-var T = new Twit(config.twit);
+const T = new Twit(config.twit);
 
 const HOUR_INTERVAL = 2;
 

@@ -1,9 +1,5 @@
-// using npm unirest package https://github.com/Kong/unirest-nodejs// https://cataas.com/#/cats
-
-// Responsible for tweeting the word of the day using https://random-word-api.herokuapp.com/word
-
 // using npm unirest package https://github.com/Kong/unirest-nodejs
-var unirest = require('unirest');
+const unirest = require('unirest');
 
 module.exports = {
     getDadJoke() {
