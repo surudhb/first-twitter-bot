@@ -1,10 +1,10 @@
 var Twit = require('twit');
 var config = require('./config');
 
-var cataas = require('./cats');
-var hazdadjokes = require('./dadjokes');
-var jokes = require('./jokes.js');
-var wotd = require('./wotd');
+var cataas = require('./content/cats');
+var hazdadjokes = require('./content/dadjokes');
+var jokes = require('./content/jokes.js');
+var wotd = require('./content/wotd');
 
 var T = new Twit(config.twit);
 
