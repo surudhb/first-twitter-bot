@@ -1,0 +1,5 @@
+# ignore files beginning with underscore '_'
+_*
+
+#ignore node_modules
+node_modules

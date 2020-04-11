@@ -1,0 +1,24 @@
+{
+  "name": "p5twitterbot",
+  "version": "1.0.0",
+  "description": "following coding train's p5 twitter bot tutorial",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bot",
+    "twitter",
+    "coronavirus",
+    "covid19",
+    "covid-19"
+  ],
+  "author": "Number13",
+  "license": "ISC",
+  "dependencies": {
+    "giphy-js-sdk-core": "^1.0.6",
+    "twit": "^2.2.11",
+    "unirest": "^0.6.0"
+  }
+}
