@@ -4,7 +4,8 @@ Shoutout to [The Coding Train](https://thecodingtrain.com/) for the constant ins
 
 # Twitter Bot
 
-* To run: `npm start`
+* To run _without_ logs: `npm start`
+* To run _with_ logs: `npm test` (since that is the robust test suite)
 
 # Features
 
