@@ -1,6 +1,6 @@
 // using npm unirest package https://github.com/Kong/unirest-nodejs
-const unirest = require("unirest");
 
+const unirest = require("unirest");
 
 /**
  * Using Word of the day API https://random-word-api.herokuapp.com/word
