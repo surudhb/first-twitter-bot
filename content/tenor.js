@@ -24,13 +24,13 @@ const generateQuery = (word) => {
                     generateQuery(substitute).then(res => {
                         const results = res.body.results;
                         const media_urls = results[Math.floor(Math.random()*results.length)]["media"][0];
-                        const mobile_gif_url = media_urls["tinygif"]["url"];
+                        const mobile_gif_url = media_urls["gif"]["url"];
                         resolve(mobile_gif_url);
                         })
                         .catch(err => reject(err));
                 } else {
                     const media_urls = results[Math.floor(Math.random()*results.length)]["media"][0];
-                    const mobile_gif_url = media_urls["tinygif"]["url"];
+                    const mobile_gif_url = media_urls["gif"]["url"];
                     resolve(mobile_gif_url);
                 }
                 })

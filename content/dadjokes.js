@@ -8,10 +8,7 @@ module.exports = {
             req.query({"format": "json"})
                 .headers({'Accept': 'application/json'})
                 .then(res => resolve(res.body.joke))
-                .catch(err => reject(`You done messed up: ${err}`));
+                .catch(err => reject(`Error retrieving dad joke: ${err}`));
         });
     }
 }
-
-
-

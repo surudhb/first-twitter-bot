@@ -1,11 +1,12 @@
 <img src="./assets/gary.jpeg" alt="gary" width="100"/> Follow me at [@GarySquarepan13](https://twitter.com/GarySquarepan13)
 
-Shoutout to [The Coding Train](https://thecodingtrain.com/) for the constant inspiration and tutorials! :)
+Shoutout to [The Coding Train](https://thecodingtrain.com/) for the constant inspiration and knowledge! :)
 
 # Twitter Bot
 
+* Before running: `npm install`
 * To run _without_ logs: `npm start`
-* To run _with_ logs: `npm test` (since that is the robust test suite)
+* To run _with_ logs: `npm test` (this is the "robust testing")
 
 # Features
 

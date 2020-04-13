@@ -2,6 +2,7 @@ const Twit = require('twit');
 const fs = require('fs');
 const path = require('path');
 const unirest = require("unirest");
+const { CronJob } = require('cron');
 
 const config = require('./config');
 
@@ -25,21 +26,32 @@ function init() {
         console.log = () => {};
         console.error = () => {};
     }
-    // TODO: setIntervals for tweets
+
+    // Creating cron jobs for each of Gary's tweets
+    const wotd_job = new CronJob('00 00 09 * * *', tweetWOTD); // 9:00 am
+    const dadjoke_apha_job = new CronJob('00 30 12 * * *', tweetDadJoke); // 12:30 pm
+    const dadjoke_beta_job = new CronJob('00 30 20 * * *', tweetDadJoke); // 8:30 pm
+    const joke_job = new CronJob('00 00 17 * * *', tweetJoke); // 5:00 pm
+    console.log(`Starting jobs...`);
+    wotd_job.start();
+    dadjoke_apha_job.start();
+    dadjoke_beta_job.start();
+    joke_job.start();
+    console.log(`Jobs started.`);
 }
 
 function tweetWOTDHelper(media_url, word) {
     unirest('GET', media_url).encoding(null).then(res => {
         const data = Buffer.from(res.raw_body, 'base64');
-        fs.writeFileSync('./tmp/post.gif', data, 'base64'); // create temporary file
         const file_path = path.join(__dirname, 'tmp', 'post.gif');
+        fs.writeFileSync(file_path, data, 'base64'); // create temporary file
         console.log(`successfully retrieved raw gif`);
-        // the following method doesn't support promises, so we're back to traditional callbacks
+        // the following method does not return a promise, so we're back to traditional callbacks
          T.postMediaChunked({"file_path": file_path}, (err, data) => {
             if(!err) {
                 const id = data.media_id_string;
-                tweetContent({ "status": `Gary's word of the day is: ${word}`, "media_ids": [id]});
-                fs.unlinkSync(file_path);
+                tweetContent({"status": `Gary's word of the day is: ${word}`, "media_ids": [id]});
+                fs.unlinkSync(file_path); // delete temporary file
             } else { console.error(`Error uploading media chunk: ${err}`); }
          });
         })

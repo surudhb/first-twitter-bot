@@ -12,12 +12,15 @@
     "twitter",
     "coronavirus",
     "covid19",
-    "covid-19"
+    "covid-19",
+    "gary",
+    "snail",
+    "spongebob"
   ],
   "author": "Number13",
   "license": "ISC",
   "dependencies": {
-    "giphy-js-sdk-core": "^1.0.6",
+    "cron": "^1.8.2",
     "twit": "^2.2.11",
     "unirest": "^0.6.0"
   },
