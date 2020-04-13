@@ -26,3 +26,9 @@ Shoutout to [The Coding Train](https://thecodingtrain.com/) for the constant ins
 * [Dad Jokes API](https://icanhazdadjoke.com)
 * [Jokes API](https://sv443.net/jokeapi/v2)
 * [Tenor API](https://tenor.com/gifapi)
+
+[//]: # (Heroku Deployment)
+[//]: * (`git add  -f config.js tmp/ Procfile`)
+[//]: * (Deploy to heroku and remove files from tracking)
+[//]: * (`git rm .DS_STORE`)
+[//]: * (`git rm --cached [filename]`)
