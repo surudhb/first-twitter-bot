@@ -13,10 +13,6 @@ Shoutout to [The Coding Train](https://thecodingtrain.com/) for the constant ins
 * Tweets a random word every day with a gif from tenor associated with it or with a teletubbies or spongebob gif
 * Periodically tweets jokes from two different sources
 
-# TODOs
-
-* Deployment to Heroku
-
 # Goals
 
 * Exposure to Node.js and helper packages
