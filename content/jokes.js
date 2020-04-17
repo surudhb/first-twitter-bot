@@ -1,26 +1,15 @@
-// using npm unirest package https://github.com/Kong/unirest-nodejs
-
 const unirest = require("unirest");
 
+const jokes_url = "https://sv443.net/jokeapi/v2/joke/Any";
 
-/**
- * Using JokeAPI V2 https://sv443.net/jokeapi/v2 
- */
-
-module.exports = {
-	getRandomJoke: () => {
-		return new Promise((resolve, reject) => {
-			const req = unirest("GET", "https://sv443.net/jokeapi/v2/joke/Any");
-			req.query({"format": "json"})
-				.then(res => {
-					const data = res.body;
-					if(data.type === "twopart") {
-						resolve(`${data.setup} \n\n ${data.delivery}`);
-					} else {
-						resolve(data.joke);
-					}
-				})
-				.catch(err => reject(`Error retrieving joke: ${err}`));
-		});
+module.exports = async () => {
+	const request = unirest.get(jokes_url);
+	request.header('Accept', 'application/json');
+	try {
+		const response = await request;
+		const data = response.body;
+		return data.type === "twopart" ? `${data.setup} \n\n ${data.delivery}` : data.joke;
+	} catch(err) {
+		console.error(`Error in joke: ${err}`);
 	}
-}
+};

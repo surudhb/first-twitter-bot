@@ -1,37 +1,36 @@
 const Twit = require('twit');
 const fs = require('fs');
 const path = require('path');
-const unirest = require("unirest");
 const { CronJob } = require('cron');
 
 const config = require('./config');
 
-const hazdadjokes = require('./content/dadjokes');
-const jokes = require('./content/jokes.js');
-const wotd = require('./content/wotd');
-const tenor = require('./content/tenor');
+const getDadJoke = require('./content/dadjokes');
+const getRandomJoke = require('./content/jokes');
+const getWordOfTheDay = require('./content/wotd');
+const getAssociatedGif = require('./content/tenor');
+const helpers = require('./helpers');
 
 const T = new Twit(config.twit);
-
-const HOUR_INTERVAL = 12;
 
 const DEBUG = process.env.DEBUG || false;
 
 /**
- * Promise implementation since nodejs is still 'experimental' with async/await
+ * Using async/await jajajaja
  */
 
 function init() {
+
     if(!DEBUG) {
         console.log = () => {};
         console.error = () => {};
     }
 
     // Creating cron jobs for each of Gary's tweets
-    const wotd_job = new CronJob('00 00 09 * * *', tweetWOTD); // 9:00 am
-    const dadjoke_apha_job = new CronJob('00 30 12 * * *', tweetDadJoke); // 12:30 pm
-    const dadjoke_beta_job = new CronJob('00 30 20 * * *', tweetDadJoke); // 8:30 pm
-    const joke_job = new CronJob('00 00 17 * * *', tweetJoke); // 5:00 pm
+    const wotd_job = new CronJob('00 30 09 * * *', tweetWOTD); // 9:30 am
+    const dadjoke_apha_job = new CronJob('00 00 12 * * *', tweetDadJoke); // 12:00 pm
+    const dadjoke_beta_job = new CronJob('00 30 16 * * *', tweetDadJoke); // 4:30 pm
+    const joke_job = new CronJob('00 00 21 * * *', tweetJoke); // 9:00 pm
     console.log(`Starting jobs...`);
     wotd_job.start();
     dadjoke_apha_job.start();
@@ -40,51 +39,41 @@ function init() {
     console.log(`Jobs started.`);
 }
 
-function tweetWOTDHelper(media_url, word) {
-    unirest('GET', media_url).encoding(null).then(res => {
-        const data = Buffer.from(res.raw_body, 'base64');
-        const file_path = path.join(__dirname, 'tmp', 'post.gif');
-        fs.writeFileSync(file_path, data, 'base64'); // create temporary file
-        console.log(`successfully retrieved raw gif`);
-        // the following method does not return a promise, so we're back to traditional callbacks
-         T.postMediaChunked({"file_path": file_path}, (err, data) => {
-            if(!err) {
-                const id = data.media_id_string;
-                tweetContent({"status": `Gary's word of the day is: ${word}`, "media_ids": [id]});
-                fs.unlinkSync(file_path); // delete temporary file
-            } else { console.error(`Error uploading media chunk: ${err}`); }
-         });
-        })
-        .catch(err => console.error(`Error posting word of the day: ${err}`));
-}
-
-function tweetWOTD() {
-    wotd.getWordOfTheDay()
-    .then(word => tenor.getAssociatedGif(word)
-    .then(media_url => {
-        console.log('received media url');
-        tweetWOTDHelper(media_url, word);
-    })
-    .catch(err => console.error(`Calling WOTD Error: ${err}`)));
+async function tweetWOTD() {
+    console.log(`Tweeting word of the day...`);
+    try {
+        const word = await getWordOfTheDay();
+        const media_url = await getAssociatedGif(word);
+        const raw_body = await helpers.getMedia(media_url);
+        const img_buf = Buffer.from(raw_body, 'base64');
+        const img_path = path.join(__dirname, 'tmp', 'post.gif');
+        fs.writeFileSync(img_path, img_buf, 'base64'); // create temporary file
+        const img_id = await helpers.postMediaChunked(T, img_path);
+        tweetContent({status:`Gary's word of the day is: ${word}`, media_ids: [img_id]});
+        fs.unlinkSync(img_path); // delete temporary file after img_id retrieved
+    } catch(err) {
+        console.error(`Error in parent word: ${err}`);
+    }
 }
 
 function tweetDadJoke() {
-    hazdadjokes.getDadJoke()
-        .catch(err => console.error(`Dad joke Error: ${err}`))
-        .then(joke => tweetContent({"status": joke}));
+    console.log(`Tweeting dad joke...`);
+    getDadJoke()
+    .then(joke => tweetContent({status: joke}))
+    .catch(err => console.error(`Dad joke Error: ${err}`));
 }
 
 function tweetJoke() {
-    jokes.getRandomJoke()
-        .catch(err => console.error(`Tweet normal joke error: ${err}`))
-        .then(joke => tweetContent({"status": joke}));
+    console.log(`Tweeting joke...`);
+    getRandomJoke()
+    .then(joke => tweetContent({status: joke}))
+    .catch(err => console.error(`Tweet normal joke error: ${err}`));
 }
 
-// content : { "status": `text being tweeted` }
 function tweetContent(content) {
     T.post('statuses/update', content)
-        .catch(err => console.log(`You done messed up: ${err}`))
-        .then(({resp}) => console.log(`It worked! ${resp.statusCode}`));
+    .then(({resp}) => console.log(`It worked! ${resp.statusCode}`))
+    .catch(err => console.log(`You done messed up: ${err}`));
 }
 
 

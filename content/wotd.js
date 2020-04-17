@@ -1,17 +1,18 @@
-// using npm unirest package https://github.com/Kong/unirest-nodejs
-
 const unirest = require("unirest");
 
 /**
  * Using Word of the day API https://random-word-api.herokuapp.com/word
  */
 
-module.exports = {
-	getWordOfTheDay: () => {
-        return new Promise((resolve, reject) => {
-            const req = unirest("GET", "https://random-word-api.herokuapp.com/word");
-            req.then(res => resolve(res.body))
-                .catch(err => reject(err));
-        });
+ const word_url = "https://random-word-api.herokuapp.com/word";
+
+module.exports = async () => {
+    const request = unirest.get(word_url);
+    request.header('Accept', 'application/json');
+    try {
+        const response = await request;
+        return response.body;
+    } catch(err) {
+        console.error(`Error in word: ${err}`);
     }
 }

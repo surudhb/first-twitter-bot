@@ -1,7 +1,7 @@
-// using npm unirest package https://github.com/Kong/unirest-nodejs
-
 const unirest = require("unirest");
 const config = require('../config');
+
+const SUBSTITUTES = ['teletubbies', 'spongebob', 'trump', 'cats', 'fish', 'volcano', 'avatar', 'matrix', 'star wars'];
 
 /**
  * Using Tenor's gif api https://api.tenor.com/v1/search?<parameters>
@@ -13,28 +13,22 @@ const generateQuery = (word) => {
     return req;
 }
 
- module.exports = {
-     getAssociatedGif(wotd) {
-        return new Promise((resolve, reject) => {
-            generateQuery(wotd).then(res => {
-                console.log(`Word is: ${wotd}`);
-                const results = res.body.results;
-                if(results.length < 5) {
-                    const substitute = Math.random() > 0.5 ? "teletubbies" : "spongebob";
-                    generateQuery(substitute).then(res => {
-                        const results = res.body.results;
-                        const media_urls = results[Math.floor(Math.random()*results.length)]["media"][0];
-                        const mobile_gif_url = media_urls["gif"]["url"];
-                        resolve(mobile_gif_url);
-                        })
-                        .catch(err => reject(err));
-                } else {
-                    const media_urls = results[Math.floor(Math.random()*results.length)]["media"][0];
-                    const mobile_gif_url = media_urls["gif"]["url"];
-                    resolve(mobile_gif_url);
-                }
-                })
-                .catch(err => reject(err));
-        });
-     }
- }
+ const getAssociatedGif = async (word) => {
+    const request = generateQuery(word);
+    try {
+        const response = await request;
+        let results = response.body.results;
+        if(results.length < 3) {
+            const substitute = SUBSTITUTES[Math.floor(Math.random() * SUBSTITUTES.length)];
+            const sub_request = generateQuery(substitute);
+            const sub_response = await sub_request;
+            results = sub_response.body.results;
+        }
+        const random_gif = results[Math.floor(Math.random() * results.length)]["media"][0];
+        return random_gif["gif"]["url"];
+    } catch(err) {
+        console.error(`Error in tenor: ${err}`);
+    }
+ };
+
+ module.exports = getAssociatedGif;

@@ -18,6 +18,7 @@ Shoutout to [The Coding Train](https://thecodingtrain.com/) for the constant ins
 * Exposure to Node.js and helper packages
 * Using an actual API
 * ES6 promises, chaining multiple API calls
+* ES7 async/await syntax
 * Fight boredom during lockdown #COVID19
 
 # APIs used
